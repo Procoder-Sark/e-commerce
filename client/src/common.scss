@@ -1,0 +1,12 @@
+@mixin flex-item($size: 50px) {
+    display: flex;
+    height: $size;
+    width: $size;
+    border: 1px solid red;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin card-shadow(){
+  box-shadow: grey 10px 10px 10px 3px;
+}

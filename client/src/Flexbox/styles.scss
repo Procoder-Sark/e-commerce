@@ -1,0 +1,21 @@
+@use "../common" as *;
+
+.flexbox {
+    .flex-container {
+        display: flex;
+        height: 800px;
+        border: 1px dashed black;
+        
+        flex-direction: row;
+
+    }
+
+    .flex-item {
+        @include flex-item;
+        &:nth-child(even){ 
+             align-self: end;
+        }
+       
+    }
+
+}
