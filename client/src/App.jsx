@@ -7,8 +7,12 @@ import Login from './Login';
 import Signup from './Signup';
 import Parent from './parent'
 import { Link, Outlet } from 'react-router';
+import MyNavbar from './MyNavbar';
+import Loader from './Loader';
 
 function App() {
+
+  const [ userdata, setUserdata ] = useState(null);
 
   const name = "sark";
   const [ showComponent, setShowComponent] = useState(true)
@@ -22,13 +26,17 @@ function App() {
       {/* <Login/> */}
       {/* <Signup/> */}
 
-      <Link to= "">Home</Link><br/>
+      {/* <Link to= "">Home</Link><br/>
       <Link to= "Signup">signup</Link><br/>
       <Link to= "Flex">Flexbox</Link><br/>
       <Link to= "Login">login</Link><br/>
       <Link to= "Routing/m21?keyword=iphone">Routing</Link><br/>
-      <Link to='Parent'>Parent</Link>
-      <Outlet/>
+      <Link to='Parent'>Parent</Link> */}
+
+      <MyNavbar />
+      <Loader />
+      
+      <Outlet userdata={userdata} setUserdata={setUserdata} />
     </>
   )
 }

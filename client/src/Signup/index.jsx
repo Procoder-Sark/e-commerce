@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 import "./styles.scss"
 import { Container, Row, Col, Card, Button, CardBody, CardFooter, CardHeader, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
-import { ACTIONS, initialState, signupReducer } from '../Login/signupReducer'
+import { ACTIONS, initialState, signupReducer } from './signupReducer';
 
 const Signup = () => {
 

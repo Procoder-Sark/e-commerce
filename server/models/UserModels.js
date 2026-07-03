@@ -46,12 +46,12 @@ const userSchema = new Schema({
     }
 });
 
-const sanitizeUserdata = (userdata, key=[] ) =>{
-    const {password, secret, ...sanitizeUserdata} = userdata.toObject();
+const sanitizeUserdata = (userdata, key= null ) =>{
+    const {password, secret, ...sanitize} = userdata.toObject();
     if (key) {
-        return sanitizeUserdata[key];
+        return sanitize[key];
     }
-    return sanitizeUserdata;
+    return sanitize;
 };
 
 userSchema.statics.findUser = async function (username) {

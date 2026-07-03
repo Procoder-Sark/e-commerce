@@ -6,17 +6,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { createBrowserRouter } from 'react-router';
 import routes from './routes.jsx';
 import { RouterProvider } from 'react-router';
+import UserContextProvider from './UserContextProvider.jsx';
 
 let router = createBrowserRouter([
   {
     path: '/',
-    element: <App/>,
+    element: <App />,
     children: routes
   }
 ]);
 
 createRoot(document.getElementById('root')).render(
-  <RouterProvider router= {router}>
-    <App />
-  </RouterProvider>,
+  <UserContextProvider>
+    <RouterProvider router={router}>
+      <App />
+    </RouterProvider>
+  </UserContextProvider>
 )

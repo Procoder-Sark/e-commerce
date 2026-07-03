@@ -21,3 +21,10 @@ export const ENDPOINTS = {
         CLEAR_CART: '/cart/clear-cart',
     }
 }
+
+export const REQUEST_TYPES = {
+    GET : 'get',
+    POST : 'post',
+    PUT : 'put',
+    DELETE : 'delete',
+};

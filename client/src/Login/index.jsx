@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import "./styles.scss"
 import { Container, Row, Col, Card, Button, CardBody, CardFooter, CardHeader, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
 import { useLocation } from 'react-router'
-import { axiosInstance, ENDPOINTS } from '../apiUtils'
+import { axiosInstance, ENDPOINTS, REQUEST_TYPES } from '../apiUtils'
+import useApi from '../useApi'
 
 const Login = () => {
     const {state} = useLocation();
     console.log(state);
+    const { isLoading, makeRequest } = useApi(ENDPOINTS.USER.LOGIN, REQUEST_TYPES.POST);
 
     const [ username, setUsername ] = useState('');
     const [ password, setPassword ] = useState('');
@@ -17,7 +19,11 @@ const Login = () => {
             password,
         };
         // make api call to login endpoint
-        const { data } = await axiosInstance.post(ENDPOINTS.USER.LOGIN, payload);
+        // const response = await axiosInstance.post(ENDPOINTS.USER.LOGIN, payload);
+        await makeRequest(payload);
+        
+        setPassword('');
+        setUsername('');
     };
 
     const isValid = username && password;
@@ -31,11 +37,11 @@ const Login = () => {
                         <CardBody>
                             <FormGroup controlId='username'>
                                 <FormLabel>Username</FormLabel>
-                                <FormControl onChange={e => setUsername(e.target.value)} placeholder='Enter Username'></FormControl>
+                                <FormControl value={username} onChange={e => setUsername(e.target.value)} placeholder='Enter Username'></FormControl>
                             </FormGroup>
                             <FormGroup controlId='Password'>
                                 <FormLabel>Password</FormLabel>
-                                <FormControl onChange={e => setPassword(e.target.value)} placeholder='Enter Password'></FormControl>
+                                <FormControl value={password} onChange={e => setPassword(e.target.value)} placeholder='Enter Password'></FormControl>
                             </FormGroup>
                         </CardBody>
                         <CardFooter>
