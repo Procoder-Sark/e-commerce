@@ -15,6 +15,7 @@ export const UserContext = createContext({
 const UserContextProvider = ({children}) => {
     // console.log("userContextProvider children", children);
     const [ username, setUsername ] = useState(null);
+    const [ userdata, setUserdata ] = useState(null);
     const [ message, setMessage ] = useState(null);
     const [ success, setSuccess ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(null);
@@ -22,6 +23,8 @@ const UserContextProvider = ({children}) => {
     return <UserContext.Provider value={{
         username,
         setUsername,
+        userdata,
+        setUserdata,
         message,
         setMessage,
         success,

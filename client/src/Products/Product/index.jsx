@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import {UserContext} from '../../UserContextProvider';
 import { Badge, Button, Card, CardBody, CardFooter, CardHeader, CardImg, Col } from 'react-bootstrap';
 import './styles.scss'
 import { Rating } from 'react-simple-star-rating';
@@ -6,11 +7,12 @@ import { BagCheckFill, BagPlusFill } from 'react-bootstrap-icons';
 import CartCounter from './CartCounter';
 import { useLocation, useNavigate } from 'react-router';
 import useApi from '../../useApi';
-import { ENDPOINTS } from '../../apiUtils';
+import { ENDPOINTS, REQUEST_TYPES} from '../../apiUtils';
 
 const Product = ({ product }) => {
 
-  const { userdata, isLoading } = useContext(UserContext);
+  const { username, isLoading } = useContext(UserContext);
+  console.log("The userData is:-", username);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -19,11 +21,11 @@ const Product = ({ product }) => {
   const { makeRequest: makeIncrementReq } = useApi(ENDPOINTS.CART.INCREMENT, REQUEST_TYPES.PATCH);
   const { makeRequest: makeDecrementReq } = useApi(ENDPOINTS.CART.DECREMENT, REQUEST_TYPES.PATCH);
 
-  const { title, price, image, description, rating } = product || {};
+  const { id, title, price, image, description, rating } = product || {};
 
-  const isPresentInCart = true
+  // const productInfo = cart?.find(p => p.id === product.id);
 
-  const cart = userdata?.cart?.items;
+  const cart = username?.cart?.items;
   const productInfo = cart?.find(p => p.id === id);
 
   const onIncrement = () => {
@@ -37,7 +39,7 @@ const Product = ({ product }) => {
   }
 
     const onAddToCart = () => {
-    if(!userdata) {
+    if(!username) {
       return navigate('/login', {
         state: pathname,
         replace: true,
@@ -70,7 +72,8 @@ const Product = ({ product }) => {
           </section>
         </CardBody>
         <CardFooter>
-          { isPresentInCart ? <CartCounter quantity ={4}/>: <Button variant='outline-primary' className='d-flex align-items-centre'>
+          { productInfo ? <CartCounter quantity ={1}/>: 
+          <Button onClick={onAddToCart} disabled = {isLoading} variant='outline-primary' className='d-flex align-items-centre'>
             <BagPlusFill size={25} className='me-2' />
             Add to cart
             </Button>}
