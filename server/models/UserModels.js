@@ -118,7 +118,7 @@ userSchema.statics.addToCart = async function (username, product) {
         { username },
         {
             $addToSet: {
-                "cart.items": { ...product},
+                "cart.items": { ...product, quantity: 1},
             },
             $inc: {
                 "cart.totalQuantity": 1,

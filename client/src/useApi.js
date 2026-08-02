@@ -5,8 +5,8 @@ import { UserContext } from "./UserContextProvider";
 
 const useApi = (url, type = REQUEST_TYPES.GET) => {
     const {
-        username,
-        setUsername,
+        userData,
+        setUserData,
         message,
         setMessage,
         success,
@@ -15,7 +15,7 @@ const useApi = (url, type = REQUEST_TYPES.GET) => {
         setIsLoading,
     } = useContext(UserContext);
 
-    const makeRequest = async (payload) => {
+    const makeRequest = async (payload, updateCart = false) => {
         try {
             setIsLoading(true);
             setMessage(null);
@@ -26,7 +26,15 @@ const useApi = (url, type = REQUEST_TYPES.GET) => {
 
             setSuccess(success);
             setMessage(message);
-            setUsername(data);
+            if (updateCart) {
+                setUserData(userData => ({
+                    ...userData,
+                    cart: data,
+                }));
+            } else {
+                setUserData(data);
+            }
+            
             
         } catch (error) {
             console.log('Makerequest error', error);

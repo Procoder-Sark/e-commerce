@@ -1,9 +1,9 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 
 
 export const UserContext = createContext({
-    username: null,
-    setUsername: null,
+    userData: null,
+    setUserData: null,
     message: null,
     setMessage: null,
     success: null,
@@ -14,17 +14,15 @@ export const UserContext = createContext({
 
 const UserContextProvider = ({children}) => {
     // console.log("userContextProvider children", children);
-    const [ username, setUsername ] = useState(null);
-    const [ userdata, setUserdata ] = useState(null);
+    // const [ username, setUsername ] = useState(null);
+    const [ userData, setUserData ] = useState(null);
     const [ message, setMessage ] = useState(null);
     const [ success, setSuccess ] = useState(null);
-    const [ isLoading, setIsLoading ] = useState(null);
+    const [ isLoading, setIsLoading ] = useState(null); 
 
     return <UserContext.Provider value={{
-        username,
-        setUsername,
-        userdata,
-        setUserdata,
+        userData,
+        setUserData,
         message,
         setMessage,
         success,
@@ -35,6 +33,10 @@ const UserContextProvider = ({children}) => {
         {children}
     </UserContext.Provider>
     
+}
+
+export const useUserContext = () => {
+    return useContext(UserContext);
 }
 
 export default UserContextProvider;

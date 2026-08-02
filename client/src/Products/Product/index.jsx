@@ -11,8 +11,8 @@ import { ENDPOINTS, REQUEST_TYPES} from '../../apiUtils';
 
 const Product = ({ product }) => {
 
-  const { username, isLoading } = useContext(UserContext);
-  console.log("The userData is:-", username);
+  const { userData, isLoading } = useContext(UserContext);
+  // console.log("The userData is:-", userData);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -25,8 +25,11 @@ const Product = ({ product }) => {
 
   // const productInfo = cart?.find(p => p.id === product.id);
 
-  const cart = username?.cart?.items;
+  const cart = userData?.cart?.items;
   const productInfo = cart?.find(p => p.id === id);
+  console.log("The productInfo is:-", productInfo);
+  
+
 
   const onIncrement = () => {
     if(isLoading) return
@@ -39,19 +42,24 @@ const Product = ({ product }) => {
   }
 
     const onAddToCart = () => {
-    if(!username) {
+    if(!userData) {
       return navigate('/login', {
         state: pathname,
         replace: true,
       });
     }
-    makeAddToCartReq(product);
+    makeAddToCartReq(product, true);
+     
   }
+  // console.log("Updated userData:", userData);
 
     const onRemoveFromCart = () => {
     if(isLoading) return
     makeRemoveFromCartReq(product);
   }
+
+//   console.table(userData?.cart?.items);
+// console.log("Current Product ID:", id);
 
 
 
@@ -72,7 +80,7 @@ const Product = ({ product }) => {
           </section>
         </CardBody>
         <CardFooter>
-          { productInfo ? <CartCounter quantity ={1}/>: 
+          { productInfo ? <CartCounter quantity ={productInfo.quantity}/>: 
           <Button onClick={onAddToCart} disabled = {isLoading} variant='outline-primary' className='d-flex align-items-centre'>
             <BagPlusFill size={25} className='me-2' />
             Add to cart
