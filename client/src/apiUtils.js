@@ -15,7 +15,7 @@ export const ENDPOINTS = {
     CART: {
         GET_CART: '/cart/get-cart',
         ADD_TO_CART: '/cart/add-to-cart',
-        REMOVE: '/cart/remove-from-cart',
+        REMOVE: "/cart/remove",
         INCREMENT: '/cart/increment',
         DECREMENT: '/cart/decrement',
         CLEAR_CART: '/cart/clear-cart',
@@ -27,4 +27,5 @@ export const REQUEST_TYPES = {
     POST : 'post',
     PUT : 'put',
     DELETE : 'delete',
+    PATCH : 'patch' ,
 };

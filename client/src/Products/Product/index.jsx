@@ -17,7 +17,7 @@ const Product = ({ product }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { makeRequest: makeAddToCartReq } = useApi(ENDPOINTS.CART.ADD_TO_CART, REQUEST_TYPES.POST);
-  const { makeRequest: makeRemoveFromCartReq } = useApi(ENDPOINTS.CART.REMOVE_FROM_CART, REQUEST_TYPES.DELETE);
+  const { makeRequest: makeRemoveFromCartReq } = useApi(ENDPOINTS.CART.REMOVE, REQUEST_TYPES.DELETE);
   const { makeRequest: makeIncrementReq } = useApi(ENDPOINTS.CART.INCREMENT, REQUEST_TYPES.PATCH);
   const { makeRequest: makeDecrementReq } = useApi(ENDPOINTS.CART.DECREMENT, REQUEST_TYPES.PATCH);
 
@@ -33,12 +33,12 @@ const Product = ({ product }) => {
 
   const onIncrement = () => {
     if(isLoading) return
-    makeIncrementReq(product);
+    makeIncrementReq(product, true);
   }
 
     const onDecrement = () => {
     if(isLoading) return
-    makeDecrementReq(product);
+    makeDecrementReq(product, true);
   }
 
     const onAddToCart = () => {
@@ -55,7 +55,7 @@ const Product = ({ product }) => {
 
     const onRemoveFromCart = () => {
     if(isLoading) return
-    makeRemoveFromCartReq(product);
+    makeRemoveFromCartReq(product, true);
   }
 
 //   console.table(userData?.cart?.items);
@@ -80,8 +80,8 @@ const Product = ({ product }) => {
           </section>
         </CardBody>
         <CardFooter>
-          { productInfo ? <CartCounter quantity ={productInfo.quantity}/>: 
-          <Button onClick={onAddToCart} disabled = {isLoading} variant='outline-primary' className='d-flex align-items-centre'>
+          { productInfo ? <CartCounter quantity ={productInfo.quantity} onIncrement={onIncrement} onDecrement={onDecrement} onRemove={onRemoveFromCart} />: 
+          <Button onClick={onAddToCart} disabled = {isLoading}  variant='outline-primary' className='d-flex align-items-centre'>
             <BagPlusFill size={25} className='me-2' />
             Add to cart
             </Button>}

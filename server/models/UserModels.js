@@ -133,43 +133,89 @@ userSchema.statics.addToCart = async function (username, product) {
 };
 
 
+// userSchema.statics.removeFromCart = async function (username, product) {
+//     const  userdata = await this.aggregate([
+//            {
+//         $match: { username }
+//     },
+//     {
+//         $unwind: {path: "$cart.items"}
+//     },
+//     {
+//         $match: {"cart.items.id": product.id}
+//     },
+//     {
+//         $project: {
+//           "cart.items.quantity" : true,
+//           "cart.items.price": true,
+//         }
+//     }
+//     ]);
+
+//     // const cart = userdata[0].cart;  gpt answer next
+
+//     if (!userdata.length) {
+//     throw new Error("Product not found");
+// }
+
+// const cart = userdata[0].cart;
+
+//     const user = await this.findOneAndUpdate(
+//         { username, },
+//         {
+//             $pull: {
+//                 "cart.items": {id: product.id},
+//             },
+//             $inc: {
+//                 "cart.totalQuantity": - cart.items?.quantity,
+//                 "cart.totalPrice": - cart.items?.price * cart.items?.quantity,
+//             },
+//         },
+//         {
+//             new: true,
+//         },
+//     );
+//     return sanitizeUserdata(user, "cart");
+// }; gpt answer next
+
 userSchema.statics.removeFromCart = async function (username, product) {
-    const  userdata = await this.aggregate([
-           {
-        $match: { username }
-    },
-    {
-        $unwind: {path: "$cart.items"}
-    },
-    {
-        $match: {"cart.items.id": product.id}
-    },
-    {
-        $project: {
-          "cart.items.quantity" : true,
-          "cart.items.price": true,
-        }
+
+    // Find the user
+    const user = await this.findOne({ username });
+
+    if (!user) {
+        throw new Error("User not found");
     }
-    ]);
 
-    const cart = userdata[0].cart;
+    // Find the product inside the cart
+    const productInCart = user.cart.items.find(
+        (item) => item.id === product.id
+    );
 
-    const user = await this.findOneAndUpdate(
-        { username, },
+    if (!productInCart) {
+        throw new Error("Product not found in cart");
+    }
+
+    // Remove the product and update totals
+    const updatedUser = await this.findOneAndUpdate(
+        { username },
         {
             $pull: {
-                "cart.items": {id: product.id},
+                "cart.items": {
+                    id: product.id,
+                },
             },
             $inc: {
-                "cart.totalQuantity": - cart.items?.quantity,
-                "cart.totalPrice": - cart.items?.price * cart.items?.quantity,
+                "cart.totalQuantity": -productInCart.quantity,
+                "cart.totalPrice": -(productInCart.price * productInCart.quantity),
             },
         },
         {
             new: true,
-        },
+        }
     );
-    return sanitizeUserdata(user, "cart");
+
+    return sanitizeUserdata(updatedUser, "cart");
 };
 
 userSchema.statics.increment = async function (username, product) {
@@ -180,7 +226,7 @@ userSchema.statics.increment = async function (username, product) {
                 "cart.totalQuantity": 1,
                 "cart.items.$.quantity": 1,
                 "cart.totalPrice": product.price,
-                "cart.items.$.price": product.price,
+                // "cart.items.$.price": product.price,
             },
         },
         {
@@ -198,7 +244,7 @@ userSchema.statics.decrement = async function (username, product) {
                 "cart.totalQuantity": -1,
                 "cart.items.$.quantity": -1,
                 "cart.totalPrice": -product.price,
-                "cart.items.$.price": -product.price,
+                // "cart.items.$.price": -product.price,
             },
         },
         {

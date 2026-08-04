@@ -2,14 +2,14 @@ import React from 'react'
 import { Badge } from 'react-bootstrap'
 import { BagDash, BagPlus, Trash } from 'react-bootstrap-icons'
 
-const CartCounter = ({ quantity }) => {
+const CartCounter = ({ quantity, onIncrement, onDecrement, onRemove }) => {
   return (
     <section className='d-flex align-items-end'>
-        <BagDash size={25} className='text-danger' />
+        <BagDash size={25} className='text-danger' onClick={onDecrement} />
         <Badge pill className='mx-2'>{quantity}</Badge>
-        <BagPlus size={25} className='text-success' />
+        <BagPlus size={25} className='text-success' onClick={onIncrement} />
 
-        <Trash size={25} className='text-danger ms-auto' />
+        <Trash size={25} className='text-danger ms-auto' onClick={onRemove} />
     </section>
   )
 }

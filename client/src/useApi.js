@@ -19,10 +19,25 @@ const useApi = (url, type = REQUEST_TYPES.GET) => {
         try {
             setIsLoading(true);
             setMessage(null);
-            
-            const apiResponse = (await axiosInstance[type](url, payload)).data;
+
+            // const apiResponse = (await axiosInstance[type](url, payload)).data;
+            // console.log('apiResponse', apiResponse);
+
+            let apiResponse;
+
+            if (type === REQUEST_TYPES.DELETE) {
+                apiResponse = await axiosInstance.delete(url, {
+                    data: payload,
+                });
+            } else {
+                apiResponse = await axiosInstance[type](url, payload);
+            }
             console.log('apiResponse', apiResponse);
-            const { success, message, data = null } = apiResponse;
+
+            // const apiResponse = response.data;
+
+
+            const { success, message, data = null } = apiResponse.data;
 
             setSuccess(success);
             setMessage(message);
@@ -34,8 +49,8 @@ const useApi = (url, type = REQUEST_TYPES.GET) => {
             } else {
                 setUserData(data);
             }
-            
-            
+
+
         } catch (error) {
             console.log('Makerequest error', error);
             setSuccess(false);
@@ -47,7 +62,8 @@ const useApi = (url, type = REQUEST_TYPES.GET) => {
 
     return {
         makeRequest,
-        isLoading};
+        isLoading
+    };
 };
 
 export default useApi;
